@@ -3,12 +3,27 @@
 import { createPortal } from 'react-dom'
 import { PostForm } from './PostForm'
 import { useState } from 'react'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 
 export function Actions ({ id }) {
   const [showModal, setShowModal] = useState(false)
+  const router = useRouter()
 
-  const handleDelete = () => {
-    console.log('deleting...' + id)
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`/api/posts/${id}`, {
+        method: 'DELETE'
+      })
+      if (res.ok) {
+        toast.success('Post deleted correctly')
+        router.refresh()
+      } else {
+        toast.error('error deleting post')
+      }
+    } catch (error) {
+      toast.error('network error' + error)
+    }
   }
   return (
     <div className=' flex items-center justify-between w-full'>
