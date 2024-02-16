@@ -59,9 +59,25 @@ export default function Login () {
   }
 
   const onSubmit = async data => {
+    const { email, password, username } = data
+    if (email === undefined ||
+        email === null ||
+        email.trim() === '') {
+      return toast.error('Email is empty')
+    }
+    if (password === undefined ||
+        password === null ||
+        password.trim() === '') {
+      return toast.error('Password is empty')
+    }
     if (pathName === login) { // login
       signInWithCredentials(data)
     } else { // register
+      if (username === undefined ||
+        username === null ||
+        username.trim() === '') {
+        return toast.error('Username is empty')
+      }
       signUpWithCredentials(data)
     }
   }

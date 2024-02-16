@@ -72,12 +72,12 @@ export function PostForm ({ onClose, id = undefined }) {
     if (description === undefined ||
         description === null ||
         description.trim() === '') {
-      return toast.error('empty description')
+      return toast.error('Description is empty')
     }
     if (photo === undefined ||
         photo === null ||
         photo.trim() === '') {
-      return toast.error('empty photo')
+      return toast.error('Photo url is empty')
     }
     if (id !== undefined) { // editing
       editPost(id, data)
