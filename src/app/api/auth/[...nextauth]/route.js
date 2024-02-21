@@ -24,13 +24,16 @@ const authOptions = {
         if (!match) throw new Error('Wrong password')
 
         return { // datos para generar el JWT
-          id: userFound.id,
-          username: userFound.username,
+          image: userFound.id,
+          name: userFound.username,
           email: userFound.email
         }
       }
     })
-  ]
+  ],
+  pages: {
+    signIn: '/login'
+  }
 }
 
 const handler = NextAuth(authOptions)

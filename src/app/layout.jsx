@@ -4,6 +4,8 @@ import './globals.css'
 import { NavBar } from '@/components/NavBar'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { getServerSession } from 'next-auth'
+import SessionProvider from '@/components/SessionProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -12,23 +14,26 @@ export const metadata = {
   description: 'app inspired in unsplash'
 }
 
-export default function RootLayout ({ children }) {
+export default async function RootLayout ({ children }) {
+  const session = await getServerSession()
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <NavBar />
-        {children}
-        <ToastContainer
-          position='top-right'
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme='colored'
-        />
+        <SessionProvider session={session}>
+          <NavBar />
+          {children}
+          <ToastContainer
+            position='top-right'
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme='colored'
+          />
+        </SessionProvider>
       </body>
     </html>
   )
