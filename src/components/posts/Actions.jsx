@@ -10,7 +10,11 @@ export function Actions ({ id }) {
   const [showModal, setShowModal] = useState(false)
   const router = useRouter()
 
-  const handleDelete = async () => {
+  const handleEdit = (e) => {
+    setShowModal(true)
+  }
+
+  const handleDelete = async (e) => {
     try {
       const res = await fetch(`/api/posts/${id}`, {
         method: 'DELETE'
@@ -26,14 +30,14 @@ export function Actions ({ id }) {
     }
   }
   return (
-    <div className=' flex items-center justify-between w-full'>
+    <div className=' flex items-center justify-between w-full' onClick={(e) => e.preventDefault()}>
       {showModal && createPortal(
         <PostForm onClose={() => setShowModal(false)} id={id} />,
         document.body
       )}
       <button
         type='button' className='py-1 px-2 me-2 mb-2 text-xs font-medium text-blue-700 focus:outline-none rounded-lg border border-blue-200 hover:bg-blue-100 hover:text-white focus:z-10 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-700 bg-transparent dark:text-blue-400 dark:border-blue-600 dark:hover:bg-blue-700'
-        onClick={() => setShowModal(true)}
+        onClick={handleEdit}
       >Edit
       </button>
       <button
