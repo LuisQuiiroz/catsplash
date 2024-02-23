@@ -3,11 +3,29 @@ import { NextResponse } from 'next/server'
 
 export async function GET (request, { params }) {
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id: Number(params.id)
-      }
-    })
+    let user
+    const identifier = params.id
+    if (!isNaN(identifier)) {
+      user = await prisma.user.findUnique({
+        where: {
+          id: Number(identifier)
+        },
+        include: {
+          posts: true
+        }
+      })
+    } else {
+      user = await prisma.user.findUnique({
+        where: {
+          username: identifier
+        },
+        include: {
+          posts: true
+        }
+      })
+    }
+
+    if (!user) return NextResponse.json({ error: 'User not found', status: 404 })
     return NextResponse.json(user)
   } catch (error) {
     return NextResponse.json(error.message)
