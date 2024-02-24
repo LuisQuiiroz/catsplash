@@ -1,3 +1,4 @@
+import { Actions } from '@/components/posts/Actions'
 import { ImageDownloader } from '@/components/posts/ImageDownloader'
 import { prisma } from '@/libs/prisma'
 
@@ -13,7 +14,7 @@ export default async function Image ({ params }) {
       })
       return data
     } catch (error) {
-      console.error('Error al obtener los datos de la imagen:', error)
+      console.error('Error getting image data:', error)
       return null
     }
   }
@@ -27,6 +28,7 @@ export default async function Image ({ params }) {
   // console.log(data)
   return (
     <div className='max-w-screen-xl mx-auto mt-10 p-4'>
+      <Actions data={data} />
       <img className='mx-auto' src={data.img} alt={data.content} />
       <div className='flex justify-between items-center my-10'>
         <p className='text-3xl text-gray-500 dark:text-gray-400'>{data.content}</p>
