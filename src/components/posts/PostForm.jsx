@@ -1,34 +1,47 @@
 'use client'
 
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
-export function PostForm ({ onClose, id = undefined }) {
+export function PostForm ({ onClose, idPost = undefined }) {
   const router = useRouter()
+  const { data: session } = useSession()
+  if (!session) return null
 
-  const title = id === undefined ? 'New Post' : 'Upload Post'
+  const title = idPost === undefined ? 'New Post' : 'Update Post'
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
       description: '',
       photo: ''
-      //  Imagen de prueba
-      // https://res.cloudinary.com/luisdev99/image/upload/v1706298309/imgUploader/qvhwfzq7t6znnvj3bnn0.png
     }
   })
 
-  const editPost = async (id, { description, photo }) => {
+  // if (idPost !== null) {
+  //   fetch(`/api/posts/${idPost}`)
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       reset({
+  //         description: data.content,
+  //         photo: data.img
+  //       })
+  //     })
+  // }
+
+  const editPost = async (idPost, { description, photo }) => {
     try {
-      const res = await fetch(`/api/posts/${id}`, {
+      const res = await fetch(`/api/posts/${idPost}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           content: description.trim(),
-          img: photo.trim()
+          img: photo.trim(),
+          userId: session.user.image
         })
       })
       if (res.ok) {
@@ -52,7 +65,8 @@ export function PostForm ({ onClose, id = undefined }) {
         },
         body: JSON.stringify({
           content: description.trim(),
-          img: photo.trim()
+          img: photo.trim(),
+          userId: session.user.image
         })
       })
       if (res.ok) {
@@ -79,16 +93,16 @@ export function PostForm ({ onClose, id = undefined }) {
         photo.trim() === '') {
       return toast.error('Photo url is empty')
     }
-    if (id !== undefined) { // editing
-      editPost(id, data)
+    if (idPost !== undefined) { // editing
+      editPost(idPost, data)
     } else { // add
       addPost(data)
     }
   }
 
   useEffect(() => {
-    if (id !== null) {
-      fetch(`/api/posts/${id}`)
+    if (idPost !== undefined) {
+      fetch(`/api/posts/${idPost}`)
         .then(res => res.json())
         .then(data => {
           reset({
