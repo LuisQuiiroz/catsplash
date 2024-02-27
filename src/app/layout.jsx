@@ -13,6 +13,7 @@ export const metadata = {
   title: 'catsplash',
   description: 'app inspired in unsplash'
 }
+export const dynamic = 'force-dynamic'
 
 export default async function RootLayout ({ children }) {
   const session = await getServerSession()
