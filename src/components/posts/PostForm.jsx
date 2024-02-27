@@ -1,17 +1,17 @@
 'use client'
 
+import { createPost, getOnePost, putPost } from '@/app/utils/PostRequests'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
-export function PostForm ({ onClose, idPost = undefined }) {
+export function PostForm ({ onClose, postId = undefined }) {
   const router = useRouter()
   const { data: session } = useSession()
-  if (!session) return null
 
-  const title = idPost === undefined ? 'New Post' : 'Update Post'
+  const title = postId === undefined ? 'New Post' : 'Update Post'
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
@@ -20,64 +20,39 @@ export function PostForm ({ onClose, idPost = undefined }) {
     }
   })
 
-  // if (idPost !== null) {
-  //   fetch(`/api/posts/${idPost}`)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       reset({
-  //         description: data.content,
-  //         photo: data.img
-  //       })
-  //     })
-  // }
+  if (!session) return null
 
-  const editPost = async (idPost, { description, photo }) => {
-    try {
-      const res = await fetch(`/api/posts/${idPost}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          content: description.trim(),
-          img: photo.trim(),
-          userId: session.user.image
+  useEffect(() => {
+    if (postId !== undefined) {
+      getOnePost(postId)
+        .then(data => {
+          reset({
+            description: data.content,
+            photo: data.img
+          })
         })
-      })
-      if (res.ok) {
-        toast.success('Post updated correctly')
-        onClose()
-        router.refresh()
-      } else {
-        toast.error('error uploading post')
-      }
-    } catch (error) {
-      toast.error('network error' + error)
+    }
+  }, [])
+
+  const editPost = async (data, postId, userId) => {
+    const res = await putPost(data, postId, userId)
+    if (res?.error) {
+      toast.error('Error uploading post')
+    } else {
+      toast.success('Post updated correctly')
+      onClose()
+      router.refresh()
     }
   }
 
-  const addPost = async ({ description, photo }) => {
-    try {
-      const res = await fetch('/api/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          content: description.trim(),
-          img: photo.trim(),
-          userId: session.user.image
-        })
-      })
-      if (res.ok) {
-        toast.success('uploaded post')
-        onClose()
-        router.refresh()
-      } else {
-        toast.error('error uploading post')
-      }
-    } catch (error) {
-      toast.error('network error' + error)
+  const addPost = async (data, userId) => {
+    const res = await createPost(data, userId)
+    if (res?.error) {
+      toast.error('Error creating post ')
+    } else {
+      toast.success('Post created')
+      onClose()
+      router.refresh()
     }
   }
 
@@ -93,25 +68,13 @@ export function PostForm ({ onClose, idPost = undefined }) {
         photo.trim() === '') {
       return toast.error('Photo url is empty')
     }
-    if (idPost !== undefined) { // editing
-      editPost(idPost, data)
+    if (postId !== undefined) { // editing
+      editPost(data, postId, session.user.image)
     } else { // add
-      addPost(data)
+      addPost(data, session.user.image)
     }
   }
 
-  useEffect(() => {
-    if (idPost !== undefined) {
-      fetch(`/api/posts/${idPost}`)
-        .then(res => res.json())
-        .then(data => {
-          reset({
-            description: data.content,
-            photo: data.img
-          })
-        })
-    }
-  }, [])
   return (
     <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50'>
       <div className='w-96 lg:w-[620px] mx-auto block bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 '>

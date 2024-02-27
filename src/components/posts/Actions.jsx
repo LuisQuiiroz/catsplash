@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { deletePost } from '@/app/utils/PostRequests'
 
 export function Actions ({ data }) {
   const [showModal, setShowModal] = useState(false)
@@ -13,34 +14,28 @@ export function Actions ({ data }) {
 
   const { data: session } = useSession()
 
-  if (data.userId !== session.user.image) return null
+  if (!session) return null
 
-  const idPost = data.id
+  const postId = data?.id
 
   const handleEdit = (e) => {
     setShowModal(true)
   }
 
   const handleDelete = async (e) => {
-    try {
-      const res = await fetch(`/api/posts/${idPost}`, {
-        method: 'DELETE'
-      })
-      if (res.ok) {
-        toast.success('Post deleted correctly')
-        router.refresh()
-        router.push(`/profiles/${session.user.name}`)
-      } else {
-        toast.error('error deleting post')
-      }
-    } catch (error) {
-      toast.error('network error' + error)
+    const res = await deletePost(postId)
+    if (res?.error) {
+      toast.error('Error deleting post')
+    } else {
+      toast.success('Post deleted correctly')
+      router.refresh()
+      router.push(`/profiles/${session.user.name}`)
     }
   }
   return (
     <div className=' flex items-center justify-between w-full'>
       {showModal && createPortal(
-        <PostForm onClose={() => setShowModal(false)} idPost={idPost} />,
+        <PostForm onClose={() => setShowModal(false)} postId={postId} />,
         document.body
       )}
       <button
