@@ -12,6 +12,7 @@ export function PostForm ({ onClose, postId = undefined }) {
   const { data: session } = useSession()
 
   const title = postId === undefined ? 'New Post' : 'Update Post'
+  const userId = session?.user?.email
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
@@ -69,9 +70,9 @@ export function PostForm ({ onClose, postId = undefined }) {
       return toast.error('Photo url is empty')
     }
     if (postId !== undefined) { // editing
-      editPost(data, postId, session.user.email)
+      editPost(data, postId, userId)
     } else { // add
-      addPost(data, session.user.email)
+      addPost(data, userId)
     }
   }
 
