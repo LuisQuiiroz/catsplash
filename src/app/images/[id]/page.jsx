@@ -9,7 +9,6 @@ export default async function Image ({ params }) {
   if (isNaN(id)) return <p className='max-w-screen-xl mx-auto mt-10 p-4 text-3xl text-gray-500 dark:text-gray-400'>Invalid id</p>
 
   const data = await getOnePost(id)
-  console.log(data)
   return (
     <div className='max-w-screen-xl mx-auto mt-10 p-4'>
       {
