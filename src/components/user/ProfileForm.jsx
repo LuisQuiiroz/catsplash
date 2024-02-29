@@ -1,6 +1,5 @@
 'use client'
 import { useSession } from 'next-auth/react'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -8,7 +7,7 @@ import { toast } from 'react-toastify'
 export function ProfileForm () {
   const [selectedFile, setSelectedFile] = useState(null)
   const { data: session } = useSession()
-  const id = session?.user?.image
+  const userId = session?.user?.email
 
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
@@ -75,9 +74,9 @@ export function ProfileForm () {
     }
   }
 
-  const editUser = async (id, data) => {
+  const editUser = async (data, userId) => {
     try {
-      const res = await fetch(`/api/users/${id}`, {
+      const res = await fetch(`/api/users/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -109,7 +108,7 @@ export function ProfileForm () {
       data.picture = urlImg
     }
     try {
-      await editUser(id, data)
+      await editUser(data, userId)
     } catch (error) {
       console.error('Error submitting form:', error)
       toast.error('Error updating user')
@@ -117,8 +116,8 @@ export function ProfileForm () {
   }
 
   useEffect(() => {
-    if (id !== null) {
-      fetch(`/api/users/${id}`)
+    if (userId !== null) {
+      fetch(`/api/users/${userId}`)
         .then(res => res.json())
         .then(data => {
           reset({

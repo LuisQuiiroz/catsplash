@@ -24,9 +24,9 @@ const authOptions = {
         if (!match) throw new Error('Wrong password')
 
         return { // datos para generar el JWT
-          image: userFound.id,
+          image: userFound.img,
           name: userFound.username,
-          email: userFound.email
+          email: userFound.id
         }
       }
     })

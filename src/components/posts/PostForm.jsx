@@ -69,9 +69,9 @@ export function PostForm ({ onClose, postId = undefined }) {
       return toast.error('Photo url is empty')
     }
     if (postId !== undefined) { // editing
-      editPost(data, postId, session.user.image)
+      editPost(data, postId, session.user.email)
     } else { // add
-      addPost(data, session.user.image)
+      addPost(data, session.user.email)
     }
   }
 
