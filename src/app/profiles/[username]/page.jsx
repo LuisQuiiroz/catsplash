@@ -8,7 +8,7 @@ export default async function Username ({ params }) {
 
   const data = await GetOneUser(username)
   return (
-    <div className='p-4'>
+    <div className='p-4 max-w-screen-xl mx-auto'>
       {
         data?.error
           ? (
