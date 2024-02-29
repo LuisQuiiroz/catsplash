@@ -16,8 +16,19 @@ export default async function Username ({ params }) {
             )
           : (
             <>
-              <h1 className='text-3xl text-gray-500 dark:text-gray-400 mb-4'>Username: {username}</h1>
-              <ListPost data={data.posts} />
+              <div className='md:flex max-w-2xl mx-auto p-8 gap-8 mb-8'>
+                <img
+                  className='size-32 mb-6 md:mb-0'
+                  src={data?.img}
+                  alt={data?.username}
+                />
+                <div>
+                  <h1 className='text-4xl font-bold'>{data?.name}</h1>
+                  <h1 className='text-lg mb-4'>{data?.username}</h1>
+                  <p>{data?.biography}</p>
+                </div>
+              </div>
+              <ListPost data={data?.posts} />
             </>
             )
       }
