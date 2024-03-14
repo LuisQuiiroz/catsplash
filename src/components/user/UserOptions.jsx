@@ -1,7 +1,7 @@
 import { signOut, useSession } from 'next-auth/react'
 import { createPortal } from 'react-dom'
 import { PostForm } from '../posts/PostForm'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 export function UserOptions () {
@@ -12,10 +12,27 @@ export function UserOptions () {
   const username = session?.user?.name
   const imgUser = session?.user?.image
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest('.dropdown-menu')) {
+        setUserOptions(false)
+      }
+    }
+
+    if (UserOptions) {
+      document.addEventListener('click', handleClickOutside)
+    } else {
+      document.removeEventListener('click', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [UserOptions])
   const toggleMenu = () => setUserOptions(value => !value)
 
   return (
-    <div className='flex items-center gap-3 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse'>
+    <div className='flex items-center gap-1 md:gap-3 md:order-2 rtl:space-x-reverse'>
       <button
         type='button'
         className='block px-4 py-2 text-gray-800 hover:bg-gray-300 dark:text-white dark:hover:bg-gray-800 rounded-md border dark:border-gray-800'
@@ -42,7 +59,7 @@ export function UserOptions () {
           </svg>
         </button>
         {UserOptions && (
-          <div className='absolute right-0 mt-2 p-2 w-48 bg-white dark:bg-gray-900 rounded-md shadow-xl z-20 font-medium border dark:border-gray-800' onClick={toggleMenu}>
+          <div className='absolute right-0 mt-2 p-2 w-48 bg-white dark:bg-gray-900 rounded-md shadow-xl z-20 font-medium border dark:border-gray-800 dropdown-menu' onClick={toggleMenu}>
             <Link
               href={`/profiles/${username}`}
               className='block px-4 py-2 text-gray-800 hover:bg-gray-300 dark:text-white dark:hover:bg-gray-800 rounded-md w-full text-left'
