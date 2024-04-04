@@ -1,16 +1,15 @@
-import { signOut, useSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import { createPortal } from 'react-dom'
 import { PostForm } from '../posts/PostForm'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
-export function UserOptions () {
+export function UserOptions ({ user }) {
   const [showModal, setShowModal] = useState(false)
   const [UserOptions, setUserOptions] = useState(false)
 
-  const { data: session } = useSession()
-  const username = session?.user?.name
-  const imgUser = session?.user?.image
+  const username = user?.name
+  const imgUser = user?.image
 
   useEffect(() => {
     const handleClickOutside = (e) => {
