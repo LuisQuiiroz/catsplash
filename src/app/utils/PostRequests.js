@@ -1,3 +1,5 @@
+import { customError } from './customError'
+
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
 
 export async function getAllPosts () {
@@ -12,16 +14,10 @@ export async function getAllPosts () {
     if (res.ok) {
       return await res.json()
     } else {
-      console.error('Failed to fetch posts')
-      return {
-        error: 'Failed to fetch posts'
-      }
+      return customError({ error: 'Failed to fetch posts', status: 404 })
     }
   } catch (error) {
-    console.error('Error when making GET request:', error)
-    return {
-      error: 'Error when making GET request'
-    }
+    return customError({ error: `Error when making GET request: ${error}`, status: 404 })
   }
 }
 
@@ -36,16 +32,10 @@ export async function getOnePost (id) {
     if (res.ok) {
       return await res.json()
     } else {
-      console.error('Failed to fetch post')
-      return {
-        error: 'Failed to fetch post'
-      }
+      return customError({ error: 'Failed to fetch post', status: 404 })
     }
   } catch (error) {
-    console.error('Error when making GET request:', error)
-    return {
-      error: 'Error when making GET request'
-    }
+    return customError({ error: `Error when making GET request: ${error}`, status: 404 })
   }
 }
 
@@ -65,16 +55,10 @@ export async function createPost (data, userId) {
     if (res.ok) {
       return await res.json()
     } else {
-      console.error('Post could not be created')
-      return {
-        error: 'Post could not be created'
-      }
+      return customError({ error: 'Post could not be created', status: 404 })
     }
   } catch (error) {
-    console.error('Error when making POST request:', error)
-    return {
-      error: 'Error when making POST request'
-    }
+    return customError({ error: `Error when making POST request: ${error}`, status: 404 })
   }
 }
 export async function putPost (data, postId, userId) {
@@ -93,16 +77,10 @@ export async function putPost (data, postId, userId) {
     if (res.ok) {
       return await res.json()
     } else {
-      console.error('Post could not be updated')
-      return {
-        error: 'Post could not be updated'
-      }
+      return customError({ error: 'Post could not be updated', status: 404 })
     }
   } catch (error) {
-    console.error('Error when making PUT request', error)
-    return {
-      error: 'Error when making PUT request'
-    }
+    return customError({ error: `Error when making PUT request: ${error}`, status: 404 })
   }
 }
 
@@ -112,15 +90,9 @@ export async function deletePost (id) {
       method: 'DELETE'
     })
     if (!res.ok) {
-      return {
-        error: 'Error deleting post'
-      }
+      return customError({ error: 'Error deleting post', status: 404 })
     }
   } catch (error) {
-    console.error('Error getting post data:', error)
-
-    return {
-      error: 'Error when making DELETE request'
-    }
+    return customError({ error: `Error when making DELETE request: ${error}`, status: 404 })
   }
 }
