@@ -1,3 +1,4 @@
+import { customError } from '@/app/utils/customError'
 import { prisma } from '@/libs/prisma'
 import { NextResponse } from 'next/server'
 
@@ -25,10 +26,16 @@ export async function GET (request, { params }) {
       })
     }
 
-    if (!user) return NextResponse.json({ error: 'User not found', status: 404 })
+    if (!user) {
+      return NextResponse.json(customError(
+        { error: 'User not found', status: 404 }
+      ))
+    }
     return NextResponse.json(user)
   } catch (error) {
-    return NextResponse.json(error.message)
+    return NextResponse.json(customError(
+      { error: error?.message, status: 400 }
+    ))
   }
 }
 
@@ -43,7 +50,9 @@ export async function PUT (request, { params }) {
     })
     return NextResponse.json(userUpdated)
   } catch (error) {
-    return NextResponse.json(error.message)
+    return NextResponse.json(customError(
+      { error: error?.message, status: 400 }
+    ))
   }
 }
 
@@ -56,6 +65,8 @@ export async function DELETE (request, { params }) {
     })
     return NextResponse.json(userDeleted)
   } catch (error) {
-    return NextResponse.json(error.message)
+    return NextResponse.json(customError(
+      { error: error?.message, status: 400 }
+    ))
   }
 }

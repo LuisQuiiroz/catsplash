@@ -1,16 +1,16 @@
 import { prisma } from '@/libs/prisma'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
+import { customError } from '@/app/utils/customError'
 
 export async function GET () {
   try {
     const users = await prisma.user.findMany()
     return NextResponse.json(users)
   } catch (error) {
-    return NextResponse.json(
-      { message: error.message },
-      { status: 500 }
-    )
+    return NextResponse.json(customError(
+      { error: error?.message, status: 400 }
+    ))
   }
 }
 
@@ -32,17 +32,15 @@ export async function POST (request) {
     })
 
     if (userFound) {
-      return NextResponse.json(
-        { message: 'Username already exists' },
-        { status: 400 }
-      )
+      return NextResponse.json(customError(
+        { error: 'Username already exists', status: 400 }
+      ))
     }
 
     if (emailFound) {
-      return NextResponse.json(
-        { message: 'Email already exists' },
-        { status: 400 }
-      )
+      return NextResponse.json(customError(
+        { error: 'Email already exists', status: 400 }
+      ))
     }
 
     const passHash = await bcrypt.hash(password, 10)
@@ -62,9 +60,8 @@ export async function POST (request) {
 
     return NextResponse.json(user)
   } catch (error) {
-    return NextResponse.json(
-      { message: error.message },
-      { status: 500 }
-    )
+    return NextResponse.json(customError(
+      { error: error?.message, status: 400 }
+    ))
   }
 }

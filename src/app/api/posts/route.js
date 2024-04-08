@@ -1,3 +1,4 @@
+import { customError } from '@/app/utils/customError'
 import { prisma } from '@/libs/prisma'
 import { NextResponse } from 'next/server'
 
@@ -6,7 +7,9 @@ export async function GET () {
     const posts = await prisma.post.findMany()
     return NextResponse.json(posts)
   } catch (error) {
-    return NextResponse.json(error.message)
+    return NextResponse.json(customError(
+      { error: error?.message, status: 400 }
+    ))
   }
 }
 
@@ -22,6 +25,8 @@ export async function POST (request) {
     })
     return NextResponse.json(newPost)
   } catch (error) {
-    return NextResponse.json(error.message)
+    return NextResponse.json(customError(
+      { error: error?.message, status: 400 }
+    ))
   }
 }
