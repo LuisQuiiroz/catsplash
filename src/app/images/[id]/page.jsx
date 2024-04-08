@@ -1,5 +1,6 @@
 import { getOnePost } from '@/app/utils/PostRequests'
 import { GetOneUser } from '@/app/utils/UserRequests'
+import { GoHome } from '@/components/GoHome'
 import { Actions } from '@/components/posts/Actions'
 import { ImageDownloader } from '@/components/posts/ImageDownloader'
 import Link from 'next/link'
@@ -9,15 +10,25 @@ export default async function Image ({ params }) {
   const { id } = params
 
   if (isNaN(id)) return <p className='max-w-screen-xl mx-auto mt-10 p-4 text-3xl text-gray-500 dark:text-gray-400'>Invalid id</p>
-
-  const data = await getOnePost(id)
-  const user = await GetOneUser(data.userId)
+  let data, user
+  try {
+    data = await getOnePost(id)
+    user = await GetOneUser(data?.userId)
+    console.log(data)
+  } catch (error) {
+    data = error
+  }
   return (
     <div className='max-w-screen-xl mx-auto mt-10 p-4'>
       {
         data?.error || data == null
           ? (
-            <h1 className='text-3xl text-gray-500 dark:text-gray-400'>No post found</h1>
+            <>
+              <h1 className='text-3xl text-gray-500 dark:text-gray-400'>No post found</h1>
+              <div className='flex items-center justify-center p-8'>
+                <GoHome />
+              </div>
+            </>
             )
           : (
             <>
