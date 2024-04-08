@@ -1,4 +1,5 @@
 'use client'
+import { updateUser } from '@/app/utils/UserRequests'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -76,20 +77,7 @@ export function ProfileForm () {
 
   const editUser = async (data, userId) => {
     try {
-      const res = await fetch(`/api/users/${userId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          img: data.picture,
-          name: data.name,
-          biography: data.biography,
-          phone: data.phone,
-          username: data.username,
-          email: data.email
-        })
-      })
+      const res = await updateUser(data, userId)
       if (res.ok) {
         toast.success('User updated correctly')
       } else {
