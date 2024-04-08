@@ -1,0 +1,26 @@
+### get all users
+GET http://localhost:3000/api/users
+
+### add user (pendiente)
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "data": {
+    "username": ""
+  }
+}
+
+### get one user
+GET http://localhost:3000/api/users/1
+
+### update user (retornar algun mensaje o algo)
+PUT  http://localhost:3000/api/users/1
+Content-Type: application/json
+
+{
+  "phone": "1"
+}
+
+### delete user
+DELETE  http://localhost:3000/api/users/1

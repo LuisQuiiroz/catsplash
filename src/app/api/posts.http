@@ -1,0 +1,29 @@
+### get all posts
+GET http://localhost:3000/api/posts
+
+### add post (pendiente)
+POST http://localhost:3000/api/posts
+Content-Type: application/json
+
+{
+  "data": {   
+    "content": "",
+    "userId": "",
+    "img": ""
+  }
+}
+
+### get one post
+GET http://localhost:3000/api/posts/1
+
+### update post (retornar algun mensaje o algo)
+PUT  http://localhost:3000/api/posts/7
+Content-Type: application/json
+
+{
+  "content": "Yae miko from genshin impact 2",
+  "userId": 1
+}
+
+### delete post
+DELETE  http://localhost:3000/api/posts/1
