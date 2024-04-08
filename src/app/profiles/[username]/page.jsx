@@ -29,13 +29,13 @@ export default async function Username ({ params }) {
               <div className='md:flex max-w-2xl mx-auto p-8 gap-8 mb-8'>
                 <img
                   className='size-32 mb-6 md:mb-0'
-                  src={data?.img}
+                  src={data.img ?? '/profile.webp'}
                   alt={data?.username}
                 />
                 <div>
                   <h1 className='text-4xl font-bold'>{data?.name}</h1>
                   <h1 className='text-lg mb-4'>{data?.username}</h1>
-                  <p>{data?.biography}</p>
+                  <p>{data.biography ?? 'No biography yet'}</p>
                 </div>
               </div>
               <ListPost data={data?.posts} />
