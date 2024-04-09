@@ -1,11 +1,11 @@
 import { signOut } from 'next-auth/react'
-import { createPortal } from 'react-dom'
 import { PostForm } from '../posts/PostForm'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { Modal } from '../Modal'
 
 export function UserOptions ({ user }) {
-  const [showModal, setShowModal] = useState(false)
+  const [modal, setModal] = useState(false)
   const [UserOptions, setUserOptions] = useState(false)
 
   const username = user?.name
@@ -35,13 +35,12 @@ export function UserOptions ({ user }) {
       <button
         type='button'
         className='block px-4 py-2 text-gray-800 hover:bg-gray-300 dark:text-white dark:hover:bg-gray-800 rounded-md border dark:border-gray-800'
-        onClick={() => setShowModal(true)}
+        onClick={() => setModal(true)}
       >upload
       </button>
-      {showModal && createPortal(
-        <PostForm onClose={() => setShowModal(false)} />,
-        document.body
-      )}
+      <Modal openModal={modal} closeModal={() => setModal(false)}>
+        <PostForm onClose={() => setModal(false)} />
+      </Modal>
       <div className='relative'>
         <button
           className='hover:bg-gray-300 dark:hover:bg-gray-800 dark:text-white py-2 px-4 rounded-md inline-flex items-center space-x-2'
