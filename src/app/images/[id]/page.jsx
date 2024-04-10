@@ -13,7 +13,9 @@ export default async function Image ({ params }) {
   let data, user
   try {
     data = await getOnePost(id)
-    user = await GetOneUser(data?.userId)
+    if (data?.userId) {
+      user = await GetOneUser(data?.userId)
+    }
   } catch (error) {
     data = error
   }
