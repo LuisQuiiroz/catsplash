@@ -6,10 +6,15 @@ import { customError } from '@/app/utils/customError'
 export async function GET () {
   try {
     const users = await prisma.user.findMany()
+    if (!users) {
+      return NextResponse.json(customError(
+        { error: 'Users not found', status: 400 }
+      ))
+    }
     return NextResponse.json(users)
   } catch (error) {
     return NextResponse.json(customError(
-      { error: error?.message, status: 400 }
+      { error: 'Error when trying to get the users', status: 400, moreInfo: error?.message }
     ))
   }
 }
@@ -53,6 +58,12 @@ export async function POST (request) {
       }
     })
 
+    if (!newUser) {
+      return NextResponse.json(customError(
+        { error: 'User not added', status: 400 }
+      ))
+    }
+
     const user = {
       username: newUser.username,
       email: newUser.email
@@ -61,7 +72,7 @@ export async function POST (request) {
     return NextResponse.json(user)
   } catch (error) {
     return NextResponse.json(customError(
-      { error: error?.message, status: 400 }
+      { error: 'Error when trying to add the user', status: 400, moreInfo: error?.message }
     ))
   }
 }
