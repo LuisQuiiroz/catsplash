@@ -39,7 +39,7 @@ export async function getOnePost (id) {
   }
 }
 
-export async function createPost (data, userId) {
+export async function createPost (data) {
   try {
     const res = await fetch(`${apiUrl}/api/posts`, {
       method: 'POST',
@@ -48,8 +48,7 @@ export async function createPost (data, userId) {
       },
       body: JSON.stringify({
         content: data.description.trim(),
-        img: data.photo.trim(),
-        userId
+        img: data.photo.trim()
       })
     })
     if (res.ok) {
@@ -61,7 +60,7 @@ export async function createPost (data, userId) {
     return customError({ error: `Error when making POST request: ${error}`, status: 404 })
   }
 }
-export async function putPost (data, postId, userId) {
+export async function putPost (data, postId) {
   try {
     const res = await fetch(`${apiUrl}/api/posts/${postId}`, {
       method: 'PUT',
@@ -70,8 +69,7 @@ export async function putPost (data, postId, userId) {
       },
       body: JSON.stringify({
         content: data.description.trim(),
-        img: data.photo.trim(),
-        userId
+        img: data.photo.trim()
       })
     })
     if (res.ok) {
