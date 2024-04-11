@@ -15,7 +15,7 @@ export function Actions ({ data }) {
 
   const { data: session } = useSession()
 
-  if (!session) return null
+  if (!session || session?.user?.email !== data?.userId) return null
 
   const postId = data?.id
 
