@@ -11,7 +11,7 @@ export function Modal ({ openModal, closeModal, children }) {
     }
   }, [openModal])
   return (
-    <dialog ref={ref} onCancel={closeModal} className='bg-transparent backdrop:bg-black backdrop:opacity-50'>
+    <dialog ref={ref} onCancel={closeModal} className='bg-transparent'>
       {children}
     </dialog>
   )
