@@ -56,6 +56,28 @@ export function PostForm ({ onClose, postId = undefined }) {
     }
   }
 
+  function validateURLImage (url) {
+    return new Promise((resolve, reject) => {
+      fetch(url, { method: 'HEAD' })
+        .then(response => {
+          if (response.ok) {
+            // Verifica si el tipo MIME es de una imagen
+            const contentType = response.headers.get('content-type')
+            if (contentType && contentType.startsWith('image')) {
+              resolve(true) // La URL apunta a una imagen válida
+            } else {
+              resolve(false) // La URL no apunta a una imagen válida
+            }
+          } else {
+            resolve(false) // La solicitud falló
+          }
+        })
+        .catch(error => {
+          reject(error) // Error en la solicitud
+        })
+    })
+  }
+
   const onSubmit = (data) => {
     const { description, photo } = data
     if (description === undefined ||
@@ -68,15 +90,26 @@ export function PostForm ({ onClose, postId = undefined }) {
         photo.trim() === '') {
       return toast.error('Photo url is empty')
     }
-    if (postId !== undefined) { // editing
-      editPost(data, postId)
-    } else { // add
-      addPost(data)
-    }
+
+    validateURLImage(photo)
+      .then(isValidImage => {
+        if (isValidImage) {
+          if (postId !== undefined) { // editing
+            editPost(data, postId)
+          } else { // add
+            addPost(data)
+          }
+        } else {
+          toast.error('The URL does not point to a valid image.')
+        }
+      })
+      .catch(error => {
+        toast.error('Error validating image URL:', error)
+      })
   }
 
   return (
-    <div className='w-96 lg:w-[620px] mx-auto block bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 '>
+    <div className='md:w-[400px] lg:w-[620px] mx-auto block bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 '>
       <form
         className='p-6'
         onSubmit={handleSubmit(onSubmit)}
