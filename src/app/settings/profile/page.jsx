@@ -19,7 +19,7 @@ export default function Profile () {
         }
         setUser(userData)
       })
-  }, [])
+  }, [editUser])
   return (
     <div className='p-4'>
       {/* <div>
