@@ -75,7 +75,7 @@ export function ProfileForm ({ userId, editUser }) {
   const editUserReq = async (data, userId) => {
     try {
       const res = await updateUser(data, userId)
-      if (res.ok) {
+      if (res) {
         toast.success('User updated correctly')
       } else {
         toast.error('error uploading user')
