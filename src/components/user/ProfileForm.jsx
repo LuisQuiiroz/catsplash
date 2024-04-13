@@ -77,13 +77,14 @@ export function ProfileForm ({ userId, editUser }) {
       const res = await updateUser(data, userId)
       if (res) {
         toast.success('User updated correctly')
+        editUser()
       } else {
-        toast.error('error uploading user')
+        toast.error('Error uploading user')
         throw new Error('Error updating user')
       }
     } catch (error) {
       console.error('Error updating user:', error)
-      toast.error('network error' + error)
+      toast.error('Network error' + error)
     }
   }
 
