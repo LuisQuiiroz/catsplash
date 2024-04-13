@@ -1,14 +1,11 @@
 'use client'
 import { updateUser } from '@/app/utils/UserRequests'
-import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
-export function ProfileForm () {
+export function ProfileForm ({ userId, editUser }) {
   const [selectedFile, setSelectedFile] = useState(null)
-  const { data: session } = useSession()
-  const userId = session?.user?.email
 
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
@@ -75,7 +72,7 @@ export function ProfileForm () {
     }
   }
 
-  const editUser = async (data, userId) => {
+  const editUserReq = async (data, userId) => {
     try {
       const res = await updateUser(data, userId)
       if (res.ok) {
@@ -96,7 +93,7 @@ export function ProfileForm () {
       data.picture = urlImg
     }
     try {
-      await editUser(data, userId)
+      await editUserReq(data, userId)
     } catch (error) {
       console.error('Error submitting form:', error)
       toast.error('Error updating user')
@@ -121,13 +118,13 @@ export function ProfileForm () {
   }, [])
 
   return (
-    <div className='mx-auto max-w-5xl'>
-      <div className='max-w-xl'>
+    <div className=''>
+      <div className='w-full max-w-screen-md mx-auto rounded-xl overflow-hidden bg-white dark:bg-gray-800'>
         <form
           className='p-6'
           onSubmit={handleSubmit(onSubmit)}
         >
-          <h1 className='mb-4 text-2xl font-medium text-gray-900 dark:text-white'>Profile</h1>
+          <h1 className='mb-4 text-2xl font-medium text-gray-500 dark:text-gray-400'>Change Info</h1>
           <div className='mb-5 flex items-center gap-4'>
             <input
               type='file'
@@ -234,7 +231,10 @@ export function ProfileForm () {
             errors.email && <p className='mt-2 text-sm font-medium text-red-600 dark:text-red-500'>{errors.email.message}</p>
           }
           </div>
-          <button type='submit' className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>Save</button>
+          <div className='flex justify-end'>
+            <button type='button' className='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800' onClick={editUser}>Cancel</button>
+            <button type='submit' className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800'>Save</button>
+          </div>
         </form>
       </div>
     </div>
