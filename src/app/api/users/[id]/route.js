@@ -33,7 +33,10 @@ export async function GET (request, { params }) {
         { error: 'User not found', status: 404 }
       ))
     }
-    return NextResponse.json(user)
+    const { id, img, name, biography, phone, username, email, posts } = user
+    const filteredUser = { id, img, name, biography, phone, username, email, posts }
+    console.log(filteredUser)
+    return NextResponse.json(filteredUser)
   } catch (error) {
     return NextResponse.json(customError(
       { error: 'Error when trying to get the user', status: 400, moreInfo: error?.message }
