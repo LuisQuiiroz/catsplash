@@ -47,7 +47,7 @@ export function UserOptions ({ user }) {
           onClick={toggleMenu}
         >
           <img
-            className='size-6'
+            className='size-6 rounded-full'
             src={imgUser}
             alt={username}
           />
