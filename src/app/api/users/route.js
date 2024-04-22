@@ -54,7 +54,8 @@ export async function POST (request) {
       data: {
         username,
         email,
-        pass_hash: passHash
+        pass_hash: passHash,
+        img: 'https://res.cloudinary.com/luisdev99/image/upload/v1713820967/imgUploader/apwuuayv0glkewanfywx.webp'
       }
     })
 
