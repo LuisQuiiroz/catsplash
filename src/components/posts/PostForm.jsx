@@ -51,6 +51,10 @@ export function PostForm ({ onClose, postId = undefined }) {
       toast.error('Error creating post ')
     } else {
       toast.success('Post created')
+      reset({
+        description: '',
+        photo: ''
+      })
       onClose()
       router.refresh()
     }
