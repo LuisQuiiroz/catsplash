@@ -42,7 +42,7 @@ export function ProfileForm ({ userId, editUser }) {
     }
     const formData = new FormData()
     if (fileObj && fileObj.type.startsWith('image/')) {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL_CLOUDINARY
       const presetName = process.env.NEXT_PUBLIC_UPLOAD_PRESET_NAME
 
       formData.append('file', fileObj)
@@ -62,7 +62,7 @@ export function ProfileForm ({ userId, editUser }) {
         return data.secure_url
       } catch (error) {
         console.error('Error uploading image to Cloudinary:', error)
-        toast.error('Error uploading image. Please try again.')
+        toast.error('Error uploading image. Please try another time.')
         return null
       }
     } else {
@@ -94,14 +94,16 @@ export function ProfileForm ({ userId, editUser }) {
       data.picture = urlImg
     }
     try {
-      await editUserReq(data, userId)
+      if (data.picture !== null) {
+        await editUserReq(data, userId)
+      }
     } catch (error) {
       console.error('Error submitting form:', error)
       toast.error('Error updating user')
     }
   }
 
-  useEffect(() => {
+  useEffect(() => { // get user info
     if (userId !== null) {
       fetch(`/api/users/${userId}`)
         .then(res => res.json())
