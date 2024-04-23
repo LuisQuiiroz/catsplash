@@ -15,8 +15,8 @@ export default function Login () {
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      email: 'test@test.com',
-      password: 'testtest'
+      email: '',
+      password: ''
     }
   })
   const signInWithCredentials = async data => {
@@ -98,6 +98,7 @@ export default function Login () {
                 name='username'
                 className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                 placeholder='yourUsername'
+                autoComplete='off'
                 {...register('username', {
                   required: {
                     value: true,
@@ -122,6 +123,7 @@ export default function Login () {
               name='email'
               className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               placeholder='yourEmail@gmail.com'
+              autoComplete='off'
               {...register('email', {
                 required: {
                   value: true,
@@ -145,6 +147,7 @@ export default function Login () {
               name='password'
               className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               placeholder='********'
+              autoComplete='off'
               {...register('password', {
                 required: {
                   value: true,
@@ -157,23 +160,14 @@ export default function Login () {
                 maxLength: {
                   value: 8,
                   message: 'The password must be 8 characters'
-                }
+                },
+                validate: value => value.trim().length === value.length || 'Password cannot have leading or trailing spaces'
               })}
             />
             {
               errors.password && <p className='mt-2 text-sm font-medium text-red-600 dark:text-red-500'>{errors.password.message}</p>
             }
           </div>
-          {
-            isLogin && (
-              <div className='flex items-start mb-5'>
-                <div className='flex items-center h-5'>
-                  <input id='remember' type='checkbox' value='' className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800' />
-                </div>
-                <label htmlFor='remember' className='ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'>Remember me</label>
-              </div>
-            )
-          }
           <button type='submit' className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>{text}</button>
           {
           isLogin
