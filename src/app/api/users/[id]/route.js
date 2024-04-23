@@ -35,7 +35,6 @@ export async function GET (request, { params }) {
     }
     const { id, img, name, biography, phone, username, email, posts } = user
     const filteredUser = { id, img, name, biography, phone, username, email, posts }
-    console.log(filteredUser)
     return NextResponse.json(filteredUser)
   } catch (error) {
     return NextResponse.json(customError(

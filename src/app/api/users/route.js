@@ -22,7 +22,8 @@ export async function GET () {
 export async function POST (request) {
   try {
     const data = await request.json()
-    const { username, email, password } = data
+    let { username, email, password } = data
+    email = email.toLowerCase()
 
     const userFound = await prisma.user.findUnique({
       where: {

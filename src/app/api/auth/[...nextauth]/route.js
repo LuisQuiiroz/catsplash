@@ -12,9 +12,10 @@ const authOptions = {
         password: { label: 'Password', type: 'password', placeholder: '********' }
       },
       async authorize (credentials, req) {
+        const email = credentials.email.toLowerCase()
         const userFound = await prisma.user.findUnique({
           where: {
-            email: credentials.email
+            email
           }
         })
         if (!userFound) throw new Error('Wrong email')
@@ -58,7 +59,7 @@ const authOptions = {
   //   }
   // },
   pages: {
-    signIn: '/login'
+    signIn: '/'
   }
 }
 
