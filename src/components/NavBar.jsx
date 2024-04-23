@@ -54,7 +54,7 @@ export function NavBar () {
 
           {
               session?.user
-                ? <UserOptions user={session?.user} />
+                ? <UserOptions />
                 : <GuestOptions />
               }
         </div>

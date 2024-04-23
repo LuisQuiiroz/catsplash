@@ -1,15 +1,17 @@
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { PostForm } from '../posts/PostForm'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Modal } from '../Modal'
+import { GetOneUser } from '@/app/utils/UserRequests'
 
-export function UserOptions ({ user }) {
+export function UserOptions () {
+  const [user, setUser] = useState(null)
+
   const [modal, setModal] = useState(false)
   const [UserOptions, setUserOptions] = useState(false)
 
-  const username = user?.name
-  const imgUser = user?.image
+  const { data: session } = useSession()
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -28,7 +30,17 @@ export function UserOptions ({ user }) {
       document.removeEventListener('click', handleClickOutside)
     }
   }, [UserOptions])
+
   const toggleMenu = () => setUserOptions(value => !value)
+
+  useEffect(() => {
+    if (session) {
+      GetOneUser(session?.user?.name)
+        .then(data => {
+          setUser(data)
+        })
+    }
+  }, [])
 
   return (
     <div className='flex items-center gap-1 md:gap-3 md:order-2 rtl:space-x-reverse'>
@@ -48,10 +60,10 @@ export function UserOptions ({ user }) {
         >
           <img
             className='size-6 rounded-full'
-            src={imgUser}
-            alt={username}
+            src={user?.img}
+            alt={user?.username}
           />
-          <span>{username}</span>
+          <span>{user?.username}</span>
           <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className={`size-4 ${UserOptions ? 'rotate-180' : ''}`}>
             <path strokeLinecap='round' strokeLinejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5' />
           </svg>
@@ -59,7 +71,7 @@ export function UserOptions ({ user }) {
         {UserOptions && (
           <div className='absolute right-0 mt-2 p-2 w-48 bg-white dark:bg-gray-900 rounded-md shadow-xl z-20 font-medium border dark:border-gray-800 dropdown-menu' onClick={toggleMenu}>
             <Link
-              href={`/profiles/${username}`}
+              href={`/profiles/${user?.username}`}
               className='block px-4 py-2 text-gray-800 hover:bg-gray-300 dark:text-white dark:hover:bg-gray-800 rounded-md w-full text-left'
             >
               Profile
