@@ -10,13 +10,15 @@ export async function GetOneUser (userId) {
         'Content-Type': 'application/json'
       }
     })
-    if (res.ok) {
-      return await res.json()
-    } else {
-      return customError({ error: 'Failed to fetch user', status: 404 })
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`)
     }
+
+    return await res.json()
   } catch (error) {
-    return customError({ error: `Error getting user data, ${error}`, status: 404 })
+    customError({ error: `Error getting user data, ${error}`, status: 404 })
+    throw new Error(`Error updating user: ${error.message}`)
   }
 }
 export async function updateUser (data, userId) {
@@ -35,12 +37,13 @@ export async function updateUser (data, userId) {
         email: data.email
       })
     })
-    if (res.ok) {
-      return res.ok
-    } else {
-      return customError({ error: 'Error uploading user', status: 404 })
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`)
     }
+    // Manejar la respuesta en caso de éxito, si es necesario
+    return true
   } catch (error) {
-    return customError({ error: `Error uploading user, ${error}`, status: 404 })
+    customError({ error: `Error uploading user, ${error}`, status: 404 })
+    throw new Error(`Error updating user: ${error.message}`)
   }
 }
