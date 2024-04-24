@@ -33,27 +33,35 @@ export async function GET (request, { params }) {
         { error: 'User not found', status: 404 }
       ))
     }
+
     const { id, img, name, biography, phone, username, email, posts } = user
+
     const filteredUser = { id, img, name, biography, phone, username, email, posts }
+
     return NextResponse.json(filteredUser)
   } catch (error) {
-    return NextResponse.json(customError(
-      { error: 'Error when trying to get the user', status: 400, moreInfo: error?.message }
-    ))
+    customError(
+      { error: 'Error when trying to update the user', status: 400, moreInfo: error?.message }
+    )
+    return NextResponse.send(400, {
+      error: 'Error when trying to get the user',
+      status: 400,
+      moreInfo: error?.message
+    })
   }
 }
 
 export async function PUT (request, { params }) {
-  const session = await getServerSession(request)
-  const userId = session?.user?.email
-
-  if (!session || userId == null) {
-    return NextResponse.json(customError(
-      { error: 'Unauthorized', status: 401 }
-    ))
-  }
-
   try {
+    const session = await getServerSession(request)
+    const userId = session?.user?.email
+
+    if (!session || !userId) {
+      return NextResponse.json(customError(
+        { error: 'Unauthorized', status: 401 }
+      ))
+    }
+
     const data = await request.json()
     const userUpdated = await prisma.user.update({
       where: {
@@ -61,16 +69,23 @@ export async function PUT (request, { params }) {
       },
       data
     })
+
     if (!userUpdated) {
       return NextResponse.json(customError(
-        { error: 'Post not updated', status: 400 }
+        { error: 'User not updated', status: 400 }
       ))
     }
+
     return NextResponse.json(userUpdated)
   } catch (error) {
-    return NextResponse.json(customError(
+    customError(
       { error: 'Error when trying to update the user', status: 400, moreInfo: error?.message }
-    ))
+    )
+    return NextResponse.send(400, {
+      error: 'Error when trying to update the user',
+      status: 400,
+      moreInfo: error?.message
+    })
   }
 }
 
@@ -83,8 +98,13 @@ export async function DELETE (request, { params }) {
     })
     return NextResponse.json(userDeleted)
   } catch (error) {
-    return NextResponse.json(customError(
-      { error: 'Error when trying to delete the user', status: 400, moreInfo: error?.message }
-    ))
+    customError(
+      { error: 'Error when trying to update the user', status: 400, moreInfo: error?.message }
+    )
+    return NextResponse.send(400, {
+      error: 'Error when trying to delete the user',
+      status: 400,
+      moreInfo: error?.message
+    })
   }
 }
