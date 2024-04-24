@@ -10,11 +10,11 @@ export function ProfileForm ({ userId, editUser }) {
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
       picture: '',
-      username: '',
+      // username: '',
       name: '',
       biography: '',
-      phone: '',
-      email: ''
+      phone: ''
+      // email: ''
     }
   })
 
@@ -79,12 +79,12 @@ export function ProfileForm ({ userId, editUser }) {
         toast.success('User updated correctly')
         editUser()
       } else {
-        toast.error('Error uploading user')
+        // toast.error('Error uploading user')
         throw new Error('Error updating user')
       }
     } catch (error) {
       console.error('Error updating user:', error)
-      toast.error('Network error' + error)
+      toast.error('Error updating user')
     }
   }
 
@@ -110,11 +110,11 @@ export function ProfileForm ({ userId, editUser }) {
         .then(data => {
           reset({
             picture: data.img ?? '/profile.webp',
-            username: data.username,
+            // username: data.username,
             name: data.name,
             biography: data.biography,
-            phone: data.phone,
-            email: data.email
+            phone: data.phone
+            // email: data.email
           })
         })
     }
@@ -146,7 +146,7 @@ export function ProfileForm ({ userId, editUser }) {
             errors.pircture && <p className='mt-2 text-sm font-medium text-red-600 dark:text-red-500'>{errors.pircture.message}</p>
           }
           </div>
-          <div className='mb-5'>
+          {/* <div className='mb-5'>
             <label htmlFor='username' className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Username</label>
             <input
               type='text'
@@ -168,7 +168,7 @@ export function ProfileForm ({ userId, editUser }) {
             {
             errors.username && <p className='mt-2 text-sm font-medium text-red-600 dark:text-red-500'>{errors.username.message}</p>
           }
-          </div>
+          </div> */}
           <div className='mb-5'>
             <label htmlFor='name' className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Name</label>
             <input
@@ -211,7 +211,7 @@ export function ProfileForm ({ userId, editUser }) {
             errors.phone && <p className='mt-2 text-sm font-medium text-red-600 dark:text-red-500'>{errors.phone.message}</p>
           }
           </div>
-          <div className='mb-5'>
+          {/* <div className='mb-5'>
             <label htmlFor='email' className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Your email</label>
             <input
               type='email'
@@ -233,7 +233,7 @@ export function ProfileForm ({ userId, editUser }) {
             {
             errors.email && <p className='mt-2 text-sm font-medium text-red-600 dark:text-red-500'>{errors.email.message}</p>
           }
-          </div>
+          </div> */}
           <div className='flex justify-end'>
             <button type='button' className='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800' onClick={editUser}>Cancel</button>
             <button type='submit' className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800'>Save</button>
