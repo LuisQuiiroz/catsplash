@@ -28,7 +28,7 @@ export default async function Username ({ params }) {
             <>
               <div className='md:flex max-w-2xl mx-auto p-8 gap-8 mb-8'>
                 <img
-                  className='size-32 mb-6 md:mb-0'
+                  className='size-32 mb-6 md:mb-0 rounded-full'
                   src={data.img ?? '/profile.webp'}
                   alt={data?.username}
                 />
