@@ -21,7 +21,7 @@ export function ProfileInfo ({ user, editUser }) {
             <td className='px-8 py-6 uppercase w-1/3  text-sm'>
               photo
             </td>
-            <th scope='row' className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-lg'>
+            <th scope='row' className='px-6 py-4 font-medium text-gray-900 dark:text-white text-lg'>
               <img className='size-16 rounded-lg' src={user?.img} alt={`${user?.username} photo`} />
             </th>
           </tr>
@@ -29,7 +29,7 @@ export function ProfileInfo ({ user, editUser }) {
             <td className='px-8 py-6 uppercase w-1/3 text-sm'>
               username
             </td>
-            <th scope='row' className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-lg'>
+            <th scope='row' className='px-6 py-4 font-medium text-gray-900 dark:text-white text-lg'>
               {user?.username ?? ''}
             </th>
           </tr>
@@ -37,7 +37,7 @@ export function ProfileInfo ({ user, editUser }) {
             <td className='px-8 py-6 uppercase w-1/3 text-sm'>
               name
             </td>
-            <th scope='row' className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-lg'>
+            <th scope='row' className='px-6 py-4 font-medium text-gray-900 dark:text-white text-lg'>
               {user?.name ?? ''}
             </th>
           </tr>
@@ -45,7 +45,7 @@ export function ProfileInfo ({ user, editUser }) {
             <td className='px-8 py-6 uppercase w-1/3 text-sm'>
               bio
             </td>
-            <th scope='row' className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-lg'>
+            <th scope='row' className='px-6 py-4 font-medium text-gray-900 dark:text-white text-lg'>
               {user?.biography ?? ''}
             </th>
           </tr>
@@ -53,7 +53,7 @@ export function ProfileInfo ({ user, editUser }) {
             <td className='px-8 py-6 uppercase w-1/3 text-sm'>
               phone
             </td>
-            <th scope='row' className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-lg'>
+            <th scope='row' className='px-6 py-4 font-medium text-gray-900 dark:text-white text-lg'>
               {user?.phone ?? ''}
             </th>
           </tr>
@@ -61,7 +61,7 @@ export function ProfileInfo ({ user, editUser }) {
             <td className='px-8 py-6 uppercase w-1/3 text-sm'>
               email
             </td>
-            <th scope='row' className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-lg'>
+            <th scope='row' className='px-6 py-4 font-medium text-gray-900 dark:text-white text-lg'>
               {user?.email ?? ''}
             </th>
           </tr>
