@@ -40,7 +40,7 @@ export function UserOptions () {
           setUser(data)
         })
     }
-  }, [])
+  }, [UserOptions])
 
   return (
     <div className='flex items-center gap-1 md:gap-3 md:order-2 rtl:space-x-reverse'>
