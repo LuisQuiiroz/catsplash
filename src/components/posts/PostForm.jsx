@@ -20,8 +20,6 @@ export function PostForm ({ onClose, postId = undefined }) {
     }
   })
 
-  if (!session) return null
-
   useEffect(() => {
     if (postId !== undefined) {
       getOnePost(postId)
@@ -33,6 +31,8 @@ export function PostForm ({ onClose, postId = undefined }) {
         })
     }
   }, [])
+
+  if (!session) return null
 
   const editPost = async (data, postId) => {
     const res = await putPost(data, postId)
