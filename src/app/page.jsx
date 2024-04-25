@@ -1,6 +1,9 @@
 import { ListPost } from '@/components/posts/ListPost'
 import { getAllPosts } from './utils/PostRequests'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function Home () {
   const data = await getAllPosts()
   return (
