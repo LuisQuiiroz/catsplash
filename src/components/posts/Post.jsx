@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { Actions } from './Actions'
 
 export async function Post ({ post }) {
   return (
